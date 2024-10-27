@@ -1,0 +1,1 @@
+%KAFKA_HOME%\bin\windows\kafka-console-producer.bat --topic demo_java --bootstrap-server localhost:9092
