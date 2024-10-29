@@ -1,7 +1,6 @@
 package org.conduktor;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
@@ -14,14 +13,11 @@ public class ProducerDemo {
     private static final Logger log= LoggerFactory.getLogger(ProducerDemo.class.getSimpleName());
 
     public static void main(String[] args) {
-        log.info("Hello world!");
+        log.info("I'm Kafka Producer!");
         // create Producer properties
         Properties properties = new Properties();
-//        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "0.0.0.0:9092");
-        properties.setProperty("bootstrap.servers", "0.0.0.0:9092"); // connect to localhost
+        properties.setProperty("bootstrap.servers", "localhost:9092"); // connect to localhost
         properties.setProperty("security.protocol", "PLAINTEXT");
-
-        // set producer properties
         properties.setProperty("key.serializer", StringSerializer.class.getName());
         properties.setProperty("value.serializer", StringSerializer.class.getName());
         properties.setProperty("acks", "all");

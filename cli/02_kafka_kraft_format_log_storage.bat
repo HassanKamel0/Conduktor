@@ -1,1 +1,1 @@
-%KAFKA_HOME%\bin\windows\kafka-storage.bat format -t _VT7oIX-RDWWdRKgqzSauA -c %KAFKA_HOME%\config\kraft\server.properties
+%KAFKA_HOME%\bin\windows\kafka-storage.bat format -t im2CnzMYQJes875I2YR4TQ -c %KAFKA_HOME%\config\kraft\server.properties
