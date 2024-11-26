@@ -1,9 +1,6 @@
 package org.conduktor;
 
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,20 +15,20 @@ public class ProducerDemoKeys {
         log.info("Hello world!");
         // create Producer properties
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "localhost:9092"); // connect to localhost
-        properties.setProperty("security.protocol", "PLAINTEXT");
-        properties.setProperty("key.serializer", StringSerializer.class.getName());
-        properties.setProperty("value.serializer", StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2181"); // connect to localhost
+        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty("acks", "all");
         properties.setProperty("retries", "3");
 
         // create the Producer
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
+        String topic = "new_java";
         for (int j = 0; j < 2; j++) {
             for (int i = 0; i < 10; i++) {
-                String topic = "demo_java";
-                String key = "id_" + i;
-                String value = "hello_world" + i;
+
+                String key = "Key" + i;
+                String value = "hello_world " + i;
                 ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, key, value);
                 // send data
                 producer.send(producerRecord, new Callback() {

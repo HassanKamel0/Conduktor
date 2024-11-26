@@ -15,10 +15,10 @@ public class ProducerDemoWithCallback {
         log.info("Hello world!");
         // create Producer properties
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "localhost:9092"); // connect to localhost
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:2181"); // connect to localhost
+        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty("security.protocol", "PLAINTEXT");
-        properties.setProperty("key.serializer", StringSerializer.class.getName());
-        properties.setProperty("value.serializer", StringSerializer.class.getName());
         properties.setProperty("acks", "all");
         properties.setProperty("retries", "3");
         properties.setProperty("batch.size", "400");
@@ -29,18 +29,20 @@ public class ProducerDemoWithCallback {
         for (int j = 0; j < 10; j++) {
             for (int i = 0; i < 30; i++) {
                 ProducerRecord<String, String> producerRecord =
-                        new ProducerRecord<>("demo_java", "hello_world" + i);
+                        new ProducerRecord<>("demo_java", "key" + i, "helloWorld " + i);
                 // send data
                 producer.send(producerRecord, new Callback() {
                     @Override
                     public void onCompletion(RecordMetadata recordMetadata, Exception e) {
                         //executes every time a record successfully sent or an exception is thrown
                         if (e == null)
-                            log.info("Successfully sent message\nTopic: {}\nPartition: {}\nOffset: {}\nTimestamp: {}"
-                                    , recordMetadata.topic(), recordMetadata.partition(),
+                            log.info("Successfully sent message\nTopic: {}\nKey: {}\nPartition: {}\nOffset: {}\nTimestamp: {}"
+                                    , recordMetadata.topic(), producerRecord.key(), recordMetadata.partition(),
                                     recordMetadata.offset(), recordMetadata.timestamp());
-                        else
+                        else {
                             log.error("Error while sending message", e);
+                            // rollback
+                        }
                     }
                 });
             }

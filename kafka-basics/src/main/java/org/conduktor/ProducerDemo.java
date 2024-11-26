@@ -1,6 +1,7 @@
 package org.conduktor;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
@@ -16,10 +17,10 @@ public class ProducerDemo {
         log.info("I'm Kafka Producer!");
         // create Producer properties
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", "localhost:9092"); // connect to localhost
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // connect to localhost
         properties.setProperty("security.protocol", "PLAINTEXT");
-        properties.setProperty("key.serializer", StringSerializer.class.getName());
-        properties.setProperty("value.serializer", StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty("acks", "all");
         properties.setProperty("retries", "3");
 
