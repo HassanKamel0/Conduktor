@@ -2,20 +2,18 @@ package org.conduktor;
 
 import com.launchdarkly.eventsource.EventHandler;
 import com.launchdarkly.eventsource.MessageEvent;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
+
 @Slf4j
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class WikimediaChangeHandler implements EventHandler {
+
     private final KafkaProducer<String, String> kafkaProducer;
     private final String topic;
-
-    public WikimediaChangeHandler(KafkaProducer<String, String> kafkaProducer, String topic) {
-        this.kafkaProducer = kafkaProducer;
-        this.topic = topic;
-    }
 
     @Override
     public void onOpen() {

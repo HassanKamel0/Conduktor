@@ -31,10 +31,15 @@ public class WikimediaChangeProducer {
         EventSource.Builder builder = new EventSource.Builder(eventHandler, URI.create(url));
         EventSource eventSource = builder.build();
 
-        //start the producer in another thread
+        // for high throughput
+        properties.setProperty(ProducerConfig.LINGER_MS_CONFIG, "26");
+        properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(32 * 1024));
+        properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
+
+        // start the producer in another thread
         eventSource.start();
 
         // produce for 1-minute and block the program
-        TimeUnit.MINUTES.sleep(1);
+        TimeUnit.SECONDS.sleep(5);
     }
 }
